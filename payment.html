@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="cst2_style.css">
+        <style>
+            .mx-auto{
+                background-color: aqua;
+                background-image: url(si.jpg);
+                margin: 100PX;
+                background-size: cover;
+                
+                
+            }
+        </style>
+      
+</head>
+
+<body>
+    <header class=" fixed-top bg-info text-light py-2">
+         <h1 class="d-flex justify-content-center text-dark "> <u> Sports </u></h1>
+    </header>
+   
+    <br><br>
+    <div class="mx-auto" style="width: 400px;">
+            <h1><u> <i>Payment Options </i></u></h1>
+            <form id="paymentForm">
+                <select class="custom-select" id="paymentMethod">
+                    <option selected disabled>Select payment method</option>
+                    <option value="cash">Cash on Delivery</option>
+                    <option value="debit">Debit Card</option>
+                    <option value="credit">Credit Card</option>
+                    <option value="googlePay">Google Pay</option>
+                </select><br><br>
+                <div id="paymentDetails"></div>
+                <a class="btn btn-primary" href="https://presidencynotes.github.io/Ec_donepage/" role="button" id="confirmPayment">
+                    Confirm Payment </a>
+            </form>
+    
+</div>
+<footer class="bg-dark text-light py-1">
+    <div class="container">
+        <p class="d-flex justify-content-center">&copy; 2024 Order Things. All rights reserved.</p>
+    </div>
+</footer>
+    
+
+    <script>
+        document.getElementById('paymentMethod').addEventListener('change', function () {
+            const paymentDetails = document.getElementById('paymentDetails');
+            const confirmPayment = document.getElementById('confirmPayment');
+
+            paymentDetails.innerHTML = '';
+            confirmPayment.style.display = 'none';
+
+            switch (this.value) {
+                case 'cash':
+                    paymentDetails.innerHTML = '<p>Go For "Confirm Payment".</p>';
+                    confirmPayment.style.display = 'inline-block';
+                    break;
+                case 'debit':
+                    paymentDetails.innerHTML = `
+                        <div class="form-group">
+                            <label for="debitCardNumber">Debit Card Number</label>
+                            <div class="col-sm-7" >
+                            <input type="text" class="form-control" id="debitCardNumber" placeholder="xxxx-xxxx-xxxx">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="debitCardExpiry">Expiry Date</label>
+                           <div class="col-sm-7" > 
+                            <input type="date" class="form-control" id="debitCardExpiry" placeholder="MM/YY">
+                           </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="debitCardCVV">CVV</label>
+                            <div class="col-sm-7" >
+                            <input type="text" class="form-control" id="debitCardCVV" placeholder="CVV">
+                            </div>
+                        </div>
+                    `;
+                    confirmPayment.style.display = 'inline-block';
+                    break;
+                case 'credit':
+                    paymentDetails.innerHTML = `
+                        <div class="form-group">
+                            <label for="creditCardNumber">Credit Card Number</label>
+                          <div class="col-sm-7" >
+                            <input type="text" class="form-control" id="creditCardNumber" placeholder="xxxx-xxxx-xxxx">
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <label for="creditCardExpiry">Expiry Date</label>
+                            <div class="col-sm-7" >
+                            <input type="date" class="form-control" id="creditCardExpiry" placeholder="MM/YY">
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <labelfor="creditCardCVV">CVV</label>
+                              <div class="col-sm-7" >
+                            <input type="text" class="form-control" id="creditCardCVV" placeholder="CVV">
+                        </div>
+                    </div>
+                    `;
+                    confirmPayment.style.display = 'inline-block';
+                    break;
+                case 'googlePay':
+                 paymentDetails.innerHTML = '<img src="qrcode.png" width=150px > ';
+                    confirmPayment.style.display = 'inline-block';
+                    break;
+            }
+        });
+    </script>
+</body>
+
+</html>
