@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="cst2_style.css">
+    <style>
+        .mx-auto {
+            background-color: aqua;
+            background-image: url(si.jpg);
+            margin: 100px;
+            background-size: cover;
+        }
+        audio {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="fixed-top bg-info text-light py-2">
+        <h1 class="d-flex justify-content-center text-dark"><u>Sports</u></h1>
+    </header>
+
+    <br><br>
+    <div class="mx-auto p-4" style="width: 400px;">
+        <h1><u><i>Payment Options</i></u></h1>
+        <form id="paymentForm">
+            <div class="mb-3">
+                <label for="paymentMethod" class="form-label">Select payment method</label>
+                <select class="form-select" id="paymentMethod">
+                    <option selected disabled>Select payment method</option>
+                    <option value="cash">Cash on Delivery</option>
+                    <option value="debit">Debit Card</option>
+                    <option value="credit">Credit Card</option>
+                    <option value="googlePay">Google Pay</option>
+                </select>
+            </div>
+            <audio id="background-audio" autoplay playsinline>
+                <source src="tnxorder.mp3" type="audio/mpeg" />
+            </audio>
+            <audio id="my-audio" src="tnxorder.mp3" preload="auto" muted playsinline></audio>
+            <div id="paymentDetails"></div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary" id="confirmPayment">Confirm Payment</button>
+                <a class="btn btn-secondary" href="https://presidencynotes.github.io/Ec/main.html?#cart-items"
+                    role="button" id="goToCart">Go to Cart</a>
+            </div>
+        </form>
+    </div>
+    <footer class="bg-dark text-light py-1">
+        <div class="container">
+            <p class="d-flex justify-content-center">&copy; 2024 Order Things. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        
+        document.getElementById('paymentMethod').addEventListener('change', function () {
+            const paymentDetails = document.getElementById('paymentDetails');
+
+            paymentDetails.innerHTML = '';
+
+            switch (this.value) {
+                case 'cash':
+                    paymentDetails.innerHTML = '<p>Go For "Confirm Payment".</p>';
+                    break;
+                case 'debit':
+                    paymentDetails.innerHTML = `
+                        <div class="mb-3">
+                            <label for="debitCardNumber" class="form-label">Debit Card Number</label>
+                            <input type="number" class="form-control" id="debitCardNumber" placeholder="xxxx-xxxx-xxxx-xxxx" aria-label="Debit Card Number">
+                        </div>
+                        <div class="mb-3">
+                            <label for="debitCardExpiry" class="form-label">Expiry Date</label>
+                            <input type="date" class="form-control" id="debitCardExpiry" placeholder="MM/YY" aria-label="Debit Card Expiry Date">
+                        </div>
+                        <div class="mb-3">
+                            <label for="debitCardCVV" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="debitCardCVV" placeholder="CVV" aria-label="Debit Card CVV">
+                        </div>
+                    `;
+                    break;
+                case 'credit':
+                    paymentDetails.innerHTML = `
+                        <div class="mb-3">
+                            <label for="creditCardNumber" class="form-label">Credit Card Number</label>
+                            <input type="number" class="form-control" id="creditCardNumber" placeholder="xxxx-xxxx-xxxx-xxxx" aria-label="Credit Card Number">
+                        </div>
+                        <div class="mb-3">
+                            <label for="creditCardExpiry" class="form-label">Expiry Date</label>
+                            <input type="date" class="form-control" id="creditCardExpiry" placeholder="MM/YY" aria-label="Credit Card Expiry Date">
+                        </div>
+                        <div class="mb-3">
+                            <label for="creditCardCVV" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="creditCardCVV" placeholder="CVV" aria-label="Credit Card CVV">
+                        </div>
+                    `;
+                    break;
+                case 'googlePay':
+                    paymentDetails.innerHTML = '<img src="qrcode.png" width="150px" alt="Google Pay QR Code">';
+                    break;
+            }
+        });
+
+        document.getElementById('paymentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            let isValid = true;
+
+            if (paymentMethod === 'debit' || paymentMethod === 'credit') {
+                const cardNumber = document.getElementById(paymentMethod + 'CardNumber').value;
+                const expiryDate = document.getElementById(paymentMethod + 'CardExpiry').value;
+                const cvv = document.getElementById(paymentMethod + 'CardCVV').value;
+
+                if (cardNumber.length !== 16) {
+                    alert("Please enter a valid 16-digit card number.");
+                    isValid = false;
+                }
+
+                const today = new Date().toISOString().split('T')[0];
+                if (expiryDate < today) {
+                    alert("Expiry date cannot be earlier than today.");
+                    isValid = false;
+                }
+
+                if (cvv.length !== 3) {
+                    alert("CVV must be 3 digits.");
+                    isValid = false;
+                }
+            }
+
+            if (isValid) {
+                window.location.href = "https://presidencynotes.github.io/Ec_donepage/";
+                 const audioElement = document.getElementById("my-audio");
+                const playButton = document.getElementById("confirmPayment");
+
+              
+                }
+            }
+        );
+
+        
+    </script>
+</body>
+
+</html>
